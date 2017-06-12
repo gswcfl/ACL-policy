@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+import telnetlib
+import time
+import pexpect
+import sys
+
+def huawei_ssh_info(port1_info,port2_info,changji,login_info,ip_info,user_info,passwd1_info,passwd2_info):
+	command1 = 'display acl all'
+	command2 = 'display cur interface ' + port1_info
+	command3 = 'display cur interface ' + port2_info
+	ssh = pexpect.spawn('ssh %s@%s' %(user_info,ip_info))
+	i = ssh.expect(['password:','Are you sure you want to continue connecting (yes/no)?'],timeout=5)
+	time.sleep(1)
+	if i == 0:
+		ssh.sendline(passwd1_info)
+	elif i == 1:
+		ssh.sendline('yes')
+		ssh.expect('password:')
+		ssh.sendline(passwd1_info)
+	time.sleep(1)
+	if passwd2_info != 'null':
+		ssh.expect('>')
+		time.sleep(1)
+		ssh.sendline('super')
+		ssh.sendline(passwd2_info)
+	time.sleep(1)
+	ssh.expect('>')
+	ssh.sendline(command1)
+	ssh.expect(command1)
+	for i in range(15):
+		ssh.sendline('\n')
+	ssh.expect('>')
+	r2 = ssh.before
+	ssh.sendline(command1)
+	ssh.expect(command1)
+	ssh.expect('>')
+	r3 = ssh.before
+	ssh.sendline(command2)
+	ssh.expect(command2)
+	ssh.expect('>')
+	r4 = ssh.before
+	print r2
+	print r3
+	print r4
+	return r2,r3,r4
+
+if __name__ == '__main__':
+	port1_info = 'XGigabitEthernet 0/0/0'
+	port2_info = 'XGigabitEthernet 0/0/1'
+	changji = 'HUAWEI'
+	login_info = 'SSH'
+	ip_info = '10.168.63.1'
+	user_info = 'ctsi'
+	passwd1_info = '2016@Ctsi.com.cn'
+	passwd2_info = 'null'
+	huawei_ssh_info(port1_info,port2_info,changji,login_info,ip_info,user_info,passwd1_info,passwd2_info)
+
+
+
+
+
+
+
+
+
+
+
+

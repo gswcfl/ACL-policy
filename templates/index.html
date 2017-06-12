@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>FD路由器策略</title>
+</head>
+<body>
+<br/>
+<a href="http://10.3.211.2:5000" style="text-decoration:none">首页</a>
+<br/>
+<br/>
+<form action="/area_query/" method="get">
+显示大区ACL策略:
+<select name="area">
+	<option value='default' selectd="selectd">请选择一个大区</option>
+	<option value='Beijing'>北京大区</option>
+	<option value='Shanghai'>上海大区</option>
+	<option value='Guangdong'>广东大区</option>
+</select>
+<input type='submit' value='查询'><br>
+</form>
+
+<br/>
+
+<form action='/query/' method='get'>
+IP地址:
+<input type='text' name='address'>
+<input type='submit' value='查询' onClick="doubleCheck()"><br>
+<font size='5' color=red> {{ alert }} </font><br>
+<font style="font-weight:bold">ACL策略：{{ address_info }} {{ ip_info }} {{ area }}</font><br>
+</form>
+<textarea rows="50" cols="100" readonly="readonly" style="resize:none;">
+{{ r2 }}
+{{ r3 }}
+{{ r4 }}
+{% for i in text%}
+{{ i }}
+{% endfor %}
+</textarea>
+</body>
+</html>
